@@ -1,0 +1,7 @@
+- name: judge grafana is installed
+  shell: docker ps -a |grep grafana
+  register: result
+  ignore_errors: true
+- name: create a container
+  shell: docker run -d -p 3000:3000 --name grafana grafana/grafana-enterprise:8.2.0
+  when: result.rc != 0
