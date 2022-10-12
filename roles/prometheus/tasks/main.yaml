@@ -1,0 +1,35 @@
+- name: create need dir
+  file: 
+    path: "{{ item }}"
+    state: directory
+    owner: prometheus
+    group: prometheus
+  with_items: 
+    - /usr/local/prometheus/
+    - /var/lib/prometheus 
+    - /usr/local/prometheus/file_sd
+- name: download prometheus  binary
+  get_url: 
+    url: http://172.16.32.208:30090/prometheus_server/prometheus 
+    dest: /usr/local/prometheus/ 
+    mode: 655
+- name: add prometheus  user
+  user:
+    name: prometheus 
+    shell: /sbin/nologin
+- name: copy system service file to dest
+  copy: 
+    src: prometheus.service
+    dest: /etc/systemd/system/prometheus.service
+- name: copy prometheus.yml to /usr/local/prometheus/prometheus.yml
+  template:
+    src: prometheus.yml
+    dest: /usr/local/prometheus/prometheus.yml
+- name: copy sd_my_server.json to /usr/local/prometheus/file_sd
+  template: 
+    src: sd_my_server.json
+    dest: /usr/local/prometheus/file_sd
+- name: systemctl daemon-reload
+  shell: systemctl daemon-reload
+- name: restart prometheus service
+  service: name=prometheus.service enabled=yes state=restarted

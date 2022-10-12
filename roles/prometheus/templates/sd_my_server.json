@@ -1,0 +1,14 @@
+[
+  {
+    "targets": [
+ {% for ip in groups.node_export %}
+      "{{ ip }}:9100",
+      {% endfor %}
+      "{{ groups['node_export'][-1]}}:9100"
+],
+    "labels": {
+      "team": "infra",
+      "job": "node"
+    }
+  }
+]

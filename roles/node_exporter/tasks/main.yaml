@@ -1,0 +1,17 @@
+- name: download node_export binary
+  get_url: 
+    url: http://172.16.32.208:30090/node_exporter/node_exporter-{{ node_exporter_version }}/node_exporter
+    dest: /usr/sbin/node_exporter
+    mode: 0755
+- name: add node_exporter  user
+  user:
+    name: node_exporter
+    shell: /sbin/nologin
+- name: copy system service file to dest
+  copy: 
+    src: node_exporter.service
+    dest: /etc/systemd/system/
+- name: systemctl daemon-reload
+  shell: systemctl daemon-reload
+- name: restart node_export service
+  service: name=node_exporter.service enabled=yes state=restarted

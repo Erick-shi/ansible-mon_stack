@@ -1,0 +1,12 @@
+[prometheus]
+172.16.32.208
+[node_export]
+172.16.32.207
+172.16.32.208
+172.16.32.209
+[prometheus:vars]
+ansible_ssh_pass='zlinux'
+ansible_ssh_user=root
+[node_export:vars]
+ansible_ssh_pass='zlinux'
+ansible_ssh_user=root

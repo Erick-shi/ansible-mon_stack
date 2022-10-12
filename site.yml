@@ -1,0 +1,13 @@
+- name: install mon_stack
+  hosts: prometheus
+  gather_facts: yes
+  vars_files: groups/all
+  roles:
+    - { role: prometheus }
+    - { role: node_exporter }
+    #- { role: grafana }
+- name: install node_exporter 
+  hosts: node_export
+  vars_files: groups/all
+  roles:
+    - { role: node_exporter }
